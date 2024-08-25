@@ -1,0 +1,11 @@
+/.gradle/
+/.idea/
+/client/build/classes/
+/client/build/generated/
+/client/build/tmp/
+/client/build/libs/client.jar
+/server/build/classes/
+/server/build/generated/
+/server/build/tmp/
+/server/build/libs/settings.properties
+/server/build/libs/server.jar
