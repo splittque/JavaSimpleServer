@@ -32,7 +32,7 @@ public class ClientHandler implements Runnable{
             JoinListener joinListener = new JoinListener(this, out, in, ip);
             joinListener.run();
 
-            if (!isClosed) {
+            if (!isClosed) { // if client leave in joinlistener next code don't run
                 String username = joinListener.getUsername();
                 MessageListener messageListener = new MessageListener(this, in);
                 messageListener.run(username);
@@ -53,7 +53,7 @@ public class ClientHandler implements Runnable{
             Log.debug(Main.DEBUG, "CloseConnection started");
             if (isKicked) {
                 Log.message(true, null, "SERVER", "You have been kicked from the server", out);
-            } else if (needMessage) {
+            } else if (needMessage) { // in sometimes this message just don't needed
                 Log.info("Client with username " + Color.YELLOW + username + Color.RESET + " disconnected");
             }
             out.close();

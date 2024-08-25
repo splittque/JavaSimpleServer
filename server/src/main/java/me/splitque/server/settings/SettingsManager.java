@@ -9,14 +9,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class SettingsManager {
+public class SettingsManager { // i'm trying writing managers
     private Properties properties = new Properties();
 
     protected SettingsManager(String filename, Integer propertyNumbers, String[] keys, String[] values) {
         try {
             Log.info("Settings " + filename + " loading...");
 
-            String jarDir = new File(Main.class
+            String jarDir = new File(Main.class // getting path to .jar file
                     .getProtectionDomain()
                     .getCodeSource()
                     .getLocation()
@@ -24,7 +24,7 @@ public class SettingsManager {
                     .getParent();
             Path settings_path = Paths.get(jarDir, filename);
 
-            if (Files.notExists(settings_path)) {
+            if (Files.notExists(settings_path)) { // creating .properties if dont exist
                 Files.createFile(settings_path);
                 try (BufferedWriter writer = Files.newBufferedWriter(settings_path)) {
                     for (int i = 0; i < propertyNumbers;) {
@@ -37,10 +37,10 @@ public class SettingsManager {
                 Log.info("Settings " + filename + " created");
             }
 
-            InputStream settings_file = Files.newInputStream(settings_path);
+            InputStream settings_file = Files.newInputStream(settings_path); // loading properties
             properties.load(settings_file);
 
-            if (Files.exists(settings_path)) {
+            if (Files.exists(settings_path)) { // if any setting is missing from the file this will overwrite it
                 for (int i = 0; i < propertyNumbers;){
                     String value = loadValue(keys[i]);
                     if (value == null) {

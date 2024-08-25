@@ -22,10 +22,10 @@ public class ConnectionListener implements Runnable{
         Log.debug(Main.DEBUG, "ConnectionListener started");
         try {
             while (true) {
-                Socket ConnectedClient = server.accept();
-                SocketAddress address = ConnectedClient.getRemoteSocketAddress();
+                Socket ConnectedClient = server.accept(); // accept client connection
+                SocketAddress address = ConnectedClient.getRemoteSocketAddress(); // getting ip address
                 ip = address.toString();
-                ClientHandler ConnectedClientHandler = new ClientHandler(ConnectedClient, ip);
+                ClientHandler ConnectedClientHandler = new ClientHandler(ConnectedClient, ip); // start the client handler in a separate thread
                 new Thread(ConnectedClientHandler).start();
             }
         } catch (IOException e) {

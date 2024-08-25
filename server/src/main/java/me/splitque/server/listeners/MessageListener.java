@@ -23,7 +23,7 @@ public class MessageListener {
             }
         } catch (IOException e) {
             Log.debug(Main.DEBUG, "MessageListener stopped");
-            handler.closeConnection(false, true, username);
+            handler.closeConnection(false, true, username); // if client closed app in this class, messagelistener stopped connection
         }
     }
 }

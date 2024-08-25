@@ -1,14 +1,12 @@
 package me.splitque.server.listeners;
 
 import me.splitque.server.Main;
-import me.splitque.server.logging.Color;
 import me.splitque.server.logging.Log;
 
 import java.util.Scanner;
 
-public class CommandListener {
+public class CommandListener { // just a command listener
     private Scanner command;
-    private Scanner arguments = new Scanner(System.in);
 
     public CommandListener(Scanner scanner) {
         this.command = scanner;

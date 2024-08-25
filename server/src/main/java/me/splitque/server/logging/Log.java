@@ -5,7 +5,7 @@ import me.splitque.server.Main;
 
 import java.io.PrintWriter;
 
-public class Log {
+public class Log { // maybe need prefixes move to another class
     public static void info(String message) {
         System.out.println("[INFO] " + message);
     }

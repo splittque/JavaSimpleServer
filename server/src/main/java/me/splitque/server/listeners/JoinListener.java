@@ -16,7 +16,7 @@ public class JoinListener {
     private String ip;
     private String username;
 
-    public JoinListener(ClientHandler handler, PrintWriter out, BufferedReader in, String ip) {
+    public JoinListener(ClientHandler handler, PrintWriter out, BufferedReader in, String ip) { // needed for getting username, and welcome message :)
         this.handler = handler;
         this.out = out;
         this.in = in;
@@ -36,7 +36,7 @@ public class JoinListener {
             Log.debug(Main.DEBUG, "JoinListener finished");
         } catch (IOException e) {
             Log.debug(Main.DEBUG, "JoinListener stopped");
-            handler.closeConnection(false, false, null);
+            handler.closeConnection(false, false, null); // if client closed app in this class, joinlistener closed connection
         }
     }
 

@@ -17,17 +17,17 @@ public class Main {
     public static Scanner scanner = new Scanner(System.in);
     public static Boolean DEBUG;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) { // start serveeeer
         Log.start(false, null);
         try {
-            Settings settings = new Settings();
-            DEBUG = settings.DEBUG;
-            ServerSocket server = new ServerSocket(settings.PORT);
+            Settings settings = new Settings(); // load settings
+            DEBUG = settings.DEBUG; // getting from settings debug value
+            ServerSocket server = new ServerSocket(settings.PORT); // start server
             Log.start(true, settings.PORT);
 
-            ConnectionListener connection = new ConnectionListener(server);
+            ConnectionListener connection = new ConnectionListener(server); // infinity loop waiting connection
             new Thread(connection).start();
-            CommandListener command = new CommandListener(scanner);
+            CommandListener command = new CommandListener(scanner); // commands
             command.run();
         } catch (IOException e) {
             Log.error("Failed start server");
@@ -43,7 +43,7 @@ public class Main {
             client.closeConnection(true, false, username);
             Log.command("Client with username " + Color.YELLOW + username + Color.RESET + " kicked");
         } else {
-            Log.warn("This client doesn't exist or offline");
+            Log.warn("This client offline");
         }
     }
 }

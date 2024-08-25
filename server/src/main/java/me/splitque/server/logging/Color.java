@@ -1,6 +1,6 @@
 package me.splitque.server.logging;
 
-public class Color {
+public class Color { // color the terminal :0
     public static final String RESET = "\u001B[0m";
     public static final String BLACK = "\u001B[30m";
     public static final String RED = "\u001B[31m";
