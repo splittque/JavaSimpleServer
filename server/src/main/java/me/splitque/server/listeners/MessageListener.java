@@ -1,29 +1,37 @@
 package me.splitque.server.listeners;
 
-import me.splitque.server.ClientHandler;
-import me.splitque.server.Main;
-import me.splitque.server.logging.Log;
-import java.io.*;
+import me.splitque.server.Client;
+import me.splitque.server.Server;
+import me.splitque.logging.variables.Color;
+import me.splitque.server.logs.ServerLogger;
+import me.splitque.server.managers.SettingsManager;
 
-public class MessageListener {
+import java.io.BufferedReader;
+import java.io.IOException;
+
+public class MessageListener extends ServerLogger implements Runnable {
+    private Client client;
+    private Server server;
     private BufferedReader in;
-    private ClientHandler handler;
 
-    public MessageListener(ClientHandler handler, BufferedReader in) {
-        this.handler = handler;
+    public MessageListener(Client client, Server server, BufferedReader in) {
+        super("MessageListener", Color.ORANGE);
+        this.client = client;
+        this.server = server;
         this.in = in;
     }
 
-    public void run(String username) {
-        Log.debug(Main.DEBUG, "MessageListener started");
+    @Override
+    public void run() {
+        serverLogger.debug("MessageListener started...", SettingsManager.getServerSettings().getBoolean("debug"), System.out);
         try {
             String message;
             while ((message = in.readLine()) != null) {
-                Log.message(false, handler, username, message, null);
+                server.sendMessage(client.getUsername(), message, serverLogger);
             }
         } catch (IOException e) {
-            Log.debug(Main.DEBUG, "MessageListener stopped");
-            handler.closeConnection(false, true, username); // if client closed app in this class, messagelistener stopped connection
+            serverLogger.debug("MessageListener stopping...", SettingsManager.getServerSettings().getBoolean("debug"), System.out);
+            Thread.currentThread().interrupt();
         }
     }
 }

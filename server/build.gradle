@@ -2,10 +2,25 @@ plugins {
     id 'java'
 }
 
+configurations {
+    libToJar
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: '*.jar')
+    libToJar fileTree(dir: 'libs', include: '*.jar')
+}
+
 jar {
+    duplicatesStrategy = DuplicatesStrategy.WARN
     manifest {
         attributes(
                 'Main-Class': 'me.splitque.server.Main'
         )
+    }
+    from {
+        configurations.libToJar.collect() {
+            it.isDirectory() ? it : zipTree(it)
+        }
     }
 }

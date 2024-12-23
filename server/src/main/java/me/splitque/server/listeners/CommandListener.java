@@ -1,53 +1,45 @@
 package me.splitque.server.listeners;
 
-import me.splitque.server.Main;
-import me.splitque.server.logging.Log;
+import me.splitque.server.Server;
+import me.splitque.logging.variables.Color;
+import me.splitque.server.logs.ServerLogger;
+import me.splitque.server.managers.SettingsManager;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
-public class CommandListener { // just a command listener
-    private Scanner command;
+public class CommandListener implements Runnable {
+    private Server server;
+    private ServerLogger sLogger;
+    private Scanner commandScanner;
 
-    public CommandListener(Scanner scanner) {
-        this.command = scanner;
+
+    public CommandListener(Server server) {
+        commandScanner = new Scanner(System.in);
+        this.server = server;
+        sLogger = new ServerLogger("CommandListener", Color.PURPLE);
     }
 
+    @Override
     public void run() {
-        Log.debug(Main.DEBUG, "CommandListener started");
+        sLogger.serverLogger.debug("CommandListener started...", SettingsManager.getServerSettings().getBoolean("debug"), System.out);
         while (true) {
-            String cmd = command.nextLine();
-            String args = null;
-            switch (cmd) {
-                case "help":
-                    Log.command("Available commands:");
-                    Log.command("end - stop server");
-                    Log.command("say - broadcast message to all clients");
-                    Log.command("kick - kick connected client");
-                    Log.command("list - show you all connected clients");
-                    break;
+            String commands = commandScanner.nextLine();
+            String[] command = commands.split(" ");
+
+            switch (command[0]) {
                 case "end":
-                    Log.stop(false);
-                    System.exit(1);
-                    break;
-                case "say":
-                    Log.command("Type message:");
-                    args = command.nextLine();
-                    Log.broadcast(args);
-                    Log.command("Message sended");
-                    break;
-                case "kick":
-                    Log.command("Type username:");
-                    args = command.nextLine();
-                    Main.kickClient(args);
+                    server.serverLogger.info("Server stopping...", System.out);
+                    System.exit(0);
                     break;
                 case "list":
-                    String clients = Main.UsernameClients.toString();
-                    Log.command("All connected clients:");
-                    Log.command(clients);
+                    sLogger.serverLogger.info(server.getUsernames().toString(), System.out);
                     break;
-                default:
-                    Log.command("This command doesn't exist. Type help for information");
+                case "say":
+                    server.broadcast(String.join(" ", Arrays.copyOfRange(command, 1, command.length)));
                     break;
+                case "kick":
+                    if (!server.kickClient(command[1])) { sLogger.serverLogger.error("This user is offline", System.out); }
             }
         }
     }
